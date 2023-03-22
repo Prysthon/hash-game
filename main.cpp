@@ -1,5 +1,39 @@
 #include <iostream>
 
+int gameLength = 3;
+
+// PERGUNTAR!!!!!!!!!!!
+void printGame(char game[gameLength][gameLength]) {
+  // COMEÇO DA IMPRESSÃO DO JOGO
+  // Imprime cabeçalho
+  printf("            ");
+  for (int i = 0; i < gameLength; i++) {
+    printf("%d   ", i);
+  }
+  printf("\n");
+  // Imprimindo a linha
+  for (int i = 0; i < gameLength; i++) {
+    printf("          %d ", i);
+    for (int j = 0; j < gameLength; j++) {
+      if (j < gameLength - 1) {
+        printf("%c | ", game[i][j]);
+      }
+      else {
+        printf("%c ", game[i][j]);
+      }
+    }
+    printf("\n           ");
+    // Imprimindo as linhas horizontais
+    if (i < gameLength - 1) {
+      for (int k = 0; k < gameLength - 1; k++) {
+        printf("----");
+      }
+      printf("---\n");
+    }
+  }
+  printf("\n");
+}
+
 int main() {
 // 1a Etapa - Obter e imprimir nome dos jogadores
   char playerOne[30], playerTwo[30];
@@ -17,7 +51,6 @@ int main() {
   printf("\n");
 
 // 2a Etapa - Criar um vetor com espaço vazio e imprimir jogo da velha vazio
-  int gameLength = 3;
   char game[gameLength][gameLength];
   // Definindo os caracteres nulos como início do jogo
   for (int i = 0; i < gameLength; i++) {
@@ -35,8 +68,13 @@ int main() {
   // Imprimindo a linha
   for (int i = 0; i < gameLength; i++) {
     printf("          %d ", i);
-    for (int j = 0; j < gameLength - 1; j++) {
-      printf("%c | ", game[i][j]);
+    for (int j = 0; j < gameLength; j++) {
+      if (j < gameLength - 1) {
+        printf("%c | ", game[i][j]);
+      }
+      else {
+        printf("%c ", game[i][j]);
+      }
     }
     printf("\n           ");
     // Imprimindo as linhas horizontais
@@ -48,6 +86,49 @@ int main() {
     }
   }
   printf("\n");
-  
+
+  // 3o Etapa - criar loop e começo do jogo
+  while (true) {
+    int x, y;
+    char symbol;
+    printf("\nDigite a linha: ");
+    scanf("%d", &x);
+    printf("Digite a coluna: ");
+    scanf("%d", &y);
+    printf("Digite seu símbolo: ");
+    scanf("%s", &symbol);
+    
+    game[x][y] = symbol;
+
+  // COMEÇO DA IMPRESSÃO DO JOGO
+  // Imprime cabeçalho
+  printf("            ");
+  for (int i = 0; i < gameLength; i++) {
+    printf("%d   ", i);
+  }
+  printf("\n");
+  // Imprimindo a linha
+  for (int i = 0; i < gameLength; i++) {
+    printf("          %d ", i);
+    for (int j = 0; j < gameLength; j++) {
+      if (j < gameLength - 1) {
+        printf("%c | ", game[i][j]);
+      }
+      else {
+        printf("%c ", game[i][j]);
+      }
+    }
+    printf("\n           ");
+    // Imprimindo as linhas horizontais
+    if (i < gameLength - 1) {
+      for (int k = 0; k < gameLength - 1; k++) {
+        printf("----");
+      }
+      printf("---\n");
+    }
+  }
+  printf("\n");
+  // FIM
+  }
   return 0;
 }
