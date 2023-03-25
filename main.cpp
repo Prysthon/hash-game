@@ -1,7 +1,6 @@
 #include <iostream>
 
 void printGame(char *game, int gameLength) {
-  // COMEÇO DA IMPRESSÃO DO JOGO
   // Imprime cabeçalho
   printf("            ");
   for (int i = 0; i < gameLength; i++) {
@@ -32,62 +31,81 @@ void printGame(char *game, int gameLength) {
   printf("\n");
 }
 
-int main() {
-// 1a Etapa - Obter e imprimir nome dos jogadores
-  char playerOne[30], playerTwo[30];
+void nextShift(int *shift, int playersLength) {
+  if (*shift < playersLength - 1) {
+    *shift = *shift + 1;
+  } else {
+    *shift = 0;
+  };
+}
 
-  // TESTE
+int main() {
   int playersLength;
-  char players[playersLength];
-  char symbol[playersLength];
-  // TESTE
-  
+  // Começo do cabeçalho
   printf("* * * J O G O   D A   V E L H A * * *\n");
   printf("*************************************\n");
   printf("\n");
-  printf("Nome do jogador 1: ");
-  scanf("%[^\n]s", playerOne);
-  printf("Nome do jogador 2: ");
-  scanf(" %[^\n]s", playerTwo);
-  printf("\n");
-  printf("Boa sorte jogadores %s e %s!\n", playerOne, playerTwo);
-  printf("\n");
-  printf("*************************************\n");
-  printf("\n");
 
-  // 4a Etapa - Perguntar tamanho do tabuleiro
+  // Definindo número de jogadores e criando vetor de jogadores e seus simbolos
+  printf("Digite o numero de jogadores: ");
+  scanf("%d", &playersLength);
+  char players[playersLength][50];
+  char symbol[playersLength];
+  printf("\n");
+  
+  // Colocando os nomes nos vetores
+  for (int i = 0; i < playersLength; i++) {
+    printf("Nome do Jogador numero %d: ", i+1);
+    scanf(" %[^\n]s", players[i]);
+    printf("Simbolo jogador %d: ", i+1);
+    scanf(" %c", &symbol[i]);
+    printf("\n");
+  }
+  
+  // Imprimindo o boa sorte
+  printf("Boa sorte ");
+  for (int i = 0; i < playersLength - 2; i++) {
+    printf("%s, ", players[i]);
+  }
+  printf("%s e %s!\n", players[playersLength-2], players[playersLength-1]);
+  printf("*************************************\n");
+  printf("\n\n");
+
+  // Perguntar tamanho do tabuleiro e definindo tamanho do jogo
   int gameLength;
   printf("Tamanho do tabuleiro: ");
   scanf("%d", &gameLength);
   printf("\n");
-
-// 2a Etapa - Criar um vetor com espaço vazio e imprimir jogo da velha vazio
   char game[gameLength][gameLength];
+  
   // Definindo os caracteres nulos como início do jogo
   for (int i = 0; i < gameLength; i++) {
     for (int j = 0; j < gameLength; j++) {
       game[i][j] = ' ';
     }
   }
-  // COMEÇO DA IMPRESSÃO DO JOGO
-  printGame(&game[0][0], gameLength);
 
-  // 3o Etapa - criar loop e começo do jogo
+  // Definindo os turno
+  int shift = 0;
+  
+  // INÍCIO DO JOGO
   while (true) {
     int x, y;
-    char symbol;
+    // Imprime - cabeçalho e jogo
+    // Pega as coordenadas
+    printf("---------------  Turno de %s  ---------------\n", players[shift]);
+    printGame(&game[0][0], gameLength);
     printf("\nDigite a linha: ");
     scanf("%d", &x);
     printf("Digite a coluna: ");
     scanf("%d", &y);
-    printf("Digite seu símbolo: ");
-    scanf("%s", &symbol);
     printf("\n");
-    
-    game[x][y] = symbol;
 
-      // COMEÇO DA IMPRESSÃO DO JOGO
-    printGame(&game[0][0], gameLength);
+    // Atribui o símbolo a coordenada
+    game[x][y] = symbol[shift];
+
+    // Próximo jogador
+    nextShift(&shift, playersLength);
   }
   
   return 0;
