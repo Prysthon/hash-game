@@ -31,12 +31,21 @@ void printGame(char *game, int gameLength) {
   printf("\n");
 }
 
+// Define o turno
 void nextShift(int *shift, int playersLength) {
   if (*shift < playersLength - 1) {
     *shift = *shift + 1;
   } else {
     *shift = 0;
   };
+}
+
+bool validPosition(char *game) {
+		if (*game != ' ') {
+			printf("Posicao invalida, por favor, digite uma nova coordenada: \n\n");
+			return false;
+		};
+		return true;
 }
 
 int main() {
@@ -100,6 +109,9 @@ int main() {
     printf("Digite a coluna: ");
     scanf("%d", &y);
     printf("\n");
+
+    // Confere se posição é válida
+    if (!validPosition(&game[x][y])) continue;
 
     // Atribui o símbolo a coordenada
     game[x][y] = symbol[shift];
