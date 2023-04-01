@@ -48,6 +48,92 @@ bool validPosition(char *game) {
 		return true;
 }
 
+void gravity(char *game, int *x, int gameLength) {
+	for (int line = gameLength - 1 ;line > *x ;line--) {
+		if (*game == ' ') {
+			*x = line;
+			break;
+		}
+		game -= gameLength;
+	}
+} 
+
+bool lineVictory(char *game, int gameLength) {
+  int points = 0;
+  char symbol;
+  
+  // primeiro for para as linhas
+  for (int y = 0; y < gameLength; y++) {
+    // Resetando informações a cada linha
+    symbol = '\0';
+    points = 0;
+    // segundo for para as colunas
+    for (int x = 0; x < gameLength; x++) {
+      // Verifica se existe algo
+      if (*game != ' ') {
+        // Caso seja primeira aparição
+        if (!symbol) {
+          symbol = *game;
+          points += 1;
+        // Caso seja igual
+        } else if (symbol == *game) {
+          points += 1;
+          // Verificando se houve vitória
+          if (points >= 3) return true;
+        // Caso seja diferente
+        } else {
+          points = 0;
+          char symbol = *game;
+        }
+      } else {
+          points = 0;
+          symbol = '\0';
+        }
+      // Mudando de posição no vetor
+      game++;
+    }
+  }
+  
+  return false;
+}
+
+bool columnVictory(char *game, int gameLength) {
+    int points = 0;
+  char symbol;
+
+  // primeiro for para as colunas
+  for (int x = 0; x < gameLength; x++) {
+    // Resetando informações a cada coluna
+    symbol = '\0';
+    points = 0;
+    // segundo for para as linhas
+    for (int y = 0; y < gameLength; y++) {
+      // Verifica se existe algo
+      if (*(game + y * gameLength + x) != ' ') {
+        // Caso seja primeira aparição
+        if (!symbol) {
+          symbol = *(game + y * gameLength + x);
+          points += 1;
+        // Caso seja igual
+        } else if (symbol == *(game + y * gameLength + x)) {
+          points += 1;
+          // Verificando se houve vitória
+          if (points >= 3) return true;
+        // Caso seja diferente
+        } else {
+          points = 0;
+          char symbol = *(game + y * gameLength + x);
+        }
+      } else {
+          points = 0;
+          symbol = '\0';
+        }
+    }
+  }
+
+  return false;
+}
+
 int main() {
   int playersLength;
   // Começo do cabeçalho
@@ -94,7 +180,7 @@ int main() {
     }
   }
 
-  // Definindo os turno
+  // Definindo os turnos
   int shift = 0;
   
   // INÍCIO DO JOGO
@@ -112,13 +198,25 @@ int main() {
 
     // Confere se posição é válida
     if (!validPosition(&game[x][y])) continue;
+    
+    // Coloca efeito gravidade
+    gravity(&game[gameLength - 1][y], &x, gameLength);
 
     // Atribui o símbolo a coordenada
     game[x][y] = symbol[shift];
 
+    // Verifica vitória
+    if(lineVictory(&game[0][0], gameLength) || columnVictory(&game[0][0], gameLength)) break;
+    
     // Próximo jogador
     nextShift(&shift, playersLength);
   }
-  
+
+  // Finalizando
+  printf("\n\n\n* * *  F I M   D O   J O G O  * * *\n\n");
+  printGame(&game[0][0], gameLength);
+  printf("*******************************************\n");
+  printf("voce nao merece palmas,  %s, merece tocantins inteiro!!!\n", players[shift]);
+  printf("*******************************************\n");
   return 0;
 }
