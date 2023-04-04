@@ -98,7 +98,7 @@ bool lineVictory(char *game, int gameLength) {
 }
 
 bool columnVictory(char *game, int gameLength) {
-    int points = 0;
+   int points = 0;
   char symbol;
 
   // primeiro for para as colunas
@@ -132,6 +132,51 @@ bool columnVictory(char *game, int gameLength) {
   }
 
   return false;
+}
+
+bool principalDiagonalVictory(char *game, int gameLength) {
+  // primeiro for para as linhas
+  for (int y = 0; y < gameLength - (gameLength - 3); y++) {
+    // segundo for para as colunas
+    for (int x = 0; x < gameLength; x++) {
+      // Verifica se existe algo
+      if (*game != ' ') {
+        if (*game == *(game + gameLength + 1)) {
+          if (*game == *((game + gameLength*2) + 2)) {
+            return true;
+          }
+        }
+      }
+      game++;
+    }
+  }
+  
+  return false;
+}
+
+bool secundaryDiagonalVictory(char *game, int gameLength) {
+  // primeiro for para as linhas
+  for (int y = 0; y < gameLength - (gameLength - 3); y++) {
+    // segundo for para as colunas
+    for (int x = 0; x < gameLength; x++) {
+      // Verifica se existe algo
+      if (*game != ' ') {
+        if (*game == *(game + gameLength -1)) {
+          if (*game == *((game + gameLength*2) - 2)) {
+            return true;
+          }
+        }
+      }
+      game++;
+    }
+  }
+  
+  return false;
+}
+
+bool victory(char *game, int gameLength) {
+	if (lineVictory(game, gameLength) || columnVictory(game, gameLength) || principalDiagonalVictory(game, gameLength) || secundaryDiagonalVictory(game, gameLength)) return true;
+	return false;
 }
 
 int main() {
@@ -206,7 +251,7 @@ int main() {
     game[x][y] = symbol[shift];
 
     // Verifica vitória
-    if(lineVictory(&game[0][0], gameLength) || columnVictory(&game[0][0], gameLength)) break;
+    if(victory(&game[0][0], gameLength)) break;
     
     // Próximo jogador
     nextShift(&shift, playersLength);
