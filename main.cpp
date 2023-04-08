@@ -202,6 +202,12 @@ int main() {
     printf("\n");
   }
   
+  // Perguntando se quer função especial
+  int special;
+  printf("Deseja efeito gravidade? 1 - Sim, 2 - Nao: ");
+  scanf("%d", &special);
+  printf("\n");
+  
   // Imprimindo o boa sorte
   printf("Boa sorte ");
   for (int i = 0; i < playersLength - 2; i++) {
@@ -245,7 +251,7 @@ int main() {
     if (!validPosition(&game[x][y])) continue;
     
     // Coloca efeito gravidade
-    gravity(&game[gameLength - 1][y], &x, gameLength);
+    if (special == 1) gravity(&game[gameLength - 1][y], &x, gameLength);
 
     // Atribui o símbolo a coordenada
     game[x][y] = symbol[shift];
