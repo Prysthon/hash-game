@@ -1,1 +1,1 @@
-# hash-game
+# tic tac toe game
